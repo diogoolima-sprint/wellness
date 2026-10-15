@@ -41,6 +41,17 @@ jobs:
         with:
           credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Enable Google Cloud APIs (first deploy)
+        run: |
+          gcloud services enable \
+            cloudresourcemanager.googleapis.com serviceusage.googleapis.com iam.googleapis.com \
+            secretmanager.googleapis.com cloudfunctions.googleapis.com cloudbuild.googleapis.com \
+            artifactregistry.googleapis.com run.googleapis.com eventarc.googleapis.com \
+            pubsub.googleapis.com firestore.googleapis.com firebaserules.googleapis.com \
+            --project "$PROJECT"
+
       - name: Install functions dependencies
         working-directory: functions
         run: npm ci
