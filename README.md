@@ -72,6 +72,10 @@ Crie uma API key em <https://console.anthropic.com>.
 
 ### 4. Segredos e deploy das functions
 
+**Pelo GitHub (recomendado):** cadastre os segredos `FIREBASE_SERVICE_ACCOUNT` (JSON da conta de serviço), `ANTHROPIC_API_KEY`, `STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET` e `STRAVA_WEBHOOK_VERIFY_TOKEN` em *Settings → Secrets and variables → Actions* e rode *Actions → Deploy Firebase*. O workflow também registra o webhook do Strava (passo 5).
+
+**Pelo terminal:**
+
 ```bash
 cd functions && npm install && cd ..
 firebase functions:secrets:set ANTHROPIC_API_KEY

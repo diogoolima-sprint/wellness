@@ -1,0 +1,83 @@
+name: Deploy Firebase
+
+# Publica as regras do Firestore e as Cloud Functions, grava os segredos
+# no Secret Manager e registra o webhook do Strava (uma vez).
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['functions/**', 'shared/**', 'firestore.rules', 'firestore.indexes.json', 'firebase.json']
+
+concurrency: deploy-firebase
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT: vanta-welness
+      REGION: southamerica-east1
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check required secrets
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_WEBHOOK_VERIFY_TOKEN: ${{ secrets.STRAVA_WEBHOOK_VERIFY_TOKEN }}
+        run: |
+          missing=0
+          for n in FIREBASE_SERVICE_ACCOUNT ANTHROPIC_API_KEY STRAVA_CLIENT_ID STRAVA_CLIENT_SECRET STRAVA_WEBHOOK_VERIFY_TOKEN; do
+            if [ -z "${!n}" ]; then echo "::error::Segredo $n não configurado no repositório"; missing=1; fi
+          done
+          exit $missing
+
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+
+      - name: Install functions dependencies
+        working-directory: functions
+        run: npm ci
+
+      - name: Write functions/.env
+        run: printf 'STRAVA_CLIENT_ID=%s\n' "${{ secrets.STRAVA_CLIENT_ID }}" > functions/.env
+
+      - name: Sync secrets to Secret Manager (only when changed)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_WEBHOOK_VERIFY_TOKEN: ${{ secrets.STRAVA_WEBHOOK_VERIFY_TOKEN }}
+        run: |
+          for n in ANTHROPIC_API_KEY STRAVA_CLIENT_SECRET STRAVA_WEBHOOK_VERIFY_TOKEN; do
+            current=$(npx -y firebase-tools@14 functions:secrets:access "$n" --project "$PROJECT" 2>/dev/null || true)
+            if [ "$current" != "${!n}" ]; then
+              printf '%s' "${!n}" | npx -y firebase-tools@14 functions:secrets:set "$n" --data-file=- --project "$PROJECT" --non-interactive --force
+              echo "$n atualizado"
+            else
+              echo "$n sem mudanças"
+            fi
+          done
+
+      - name: Deploy rules and functions
+        run: npx -y firebase-tools@14 deploy --only firestore:rules,firestore:indexes,functions --project "$PROJECT" --non-interactive --force
+
+      - name: Register Strava webhook (if missing)
+        continue-on-error: true
+        env:
+          CID: ${{ secrets.STRAVA_CLIENT_ID }}
+          CSECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          VTOKEN: ${{ secrets.STRAVA_WEBHOOK_VERIFY_TOKEN }}
+        run: |
+          existing=$(curl -s "https://www.strava.com/api/v3/push_subscriptions?client_id=$CID&client_secret=$CSECRET")
+          echo "Assinaturas atuais: $existing"
+          if echo "$existing" | grep -q '"id"'; then echo "Webhook já registrado."; exit 0; fi
+          curl -sf -X POST https://www.strava.com/api/v3/push_subscriptions \
+            -F client_id="$CID" -F client_secret="$CSECRET" \
+            -F callback_url="https://$REGION-$PROJECT.cloudfunctions.net/stravaWebhook" \
+            -F verify_token="$VTOKEN"
