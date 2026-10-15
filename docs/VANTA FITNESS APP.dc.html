@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./image-slot.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#050505}
+*{box-sizing:border-box}
+.scrollarea::-webkit-scrollbar{display:none}
+.scrollarea{-ms-overflow-style:none;scrollbar-width:none}
+a{color:#FF6B1A}
+a:hover{color:#FF8A4C}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#050505;display:flex;align-items:center;justify-content:center;padding:36px;{{themeVarsCss}};--orange:#FF6B1A;--orangeL:#FF8A4C;--orangeD:#D94F00;--success:#39C477;--warning:#FFC857;--error:#EF4444;--z1:#8BC7A8;--z2:#62B78F;--z3:#FFC857;--z4:#F2994A;--z5:#E85D5D;--mp:#E53935;--ms:#F2C94C;--mn:#E8EAED;--recovery:#64748B;--fd:'Sora',sans-serif;--fb:'Inter',sans-serif;font-family:var(--fb)">
+<div style="width:390px;height:844px;border-radius:50px;background:#000;padding:12px;box-shadow:0 50px 120px rgba(0,0,0,.65),0 0 0 2px #1c1c1c;position:relative;flex-shrink:0">
+<div style="width:100%;height:100%;border-radius:40px;overflow:hidden;position:relative;background:var(--bg);display:flex;flex-direction:column">
+<div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:96px;height:26px;background:#000;border-radius:14px;z-index:70"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px 26px 4px;flex-shrink:0;position:relative;z-index:40">
+<span style="font:600 15px var(--fd);color:var(--statusbar-fg)">9:41</span>
+<div style="display:flex;gap:5px;align-items:center">
+<svg width="16" height="11" viewBox="0 0 16 11"><path d="M8 2.5C10.2 2.5 12.2 3.3 13.6 4.6L14.7 3.5C13 1.9 10.6 1 8 1C5.4 1 3 1.9 1.3 3.5L2.4 4.6C3.8 3.3 5.8 2.5 8 2.5Z" fill="var(--statusbar-fg)"/><circle cx="8" cy="8.5" r="1.3" fill="var(--statusbar-fg)"/></svg>
+<svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="19" height="10" rx="2.5" stroke="var(--statusbar-fg)" fill="none"/><rect x="2" y="2" width="16" height="7" rx="1.2" fill="var(--statusbar-fg)"/><rect x="20.5" y="3.5" width="1.5" height="4" fill="var(--statusbar-fg)"/></svg>
+</div>
+</div>
+<div class="scrollarea" style="flex:1;overflow-y:auto;position:relative">
+
+<sc-if value="{{isSplash}}" hint-placeholder-val="{{ true }}">
+<div onClick="{{goWelcome}}" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;cursor:pointer">
+<img src="assets/vanta-icon.png" alt="Vanta" style="width:72px;height:auto" />
+<span style="font:800 24px var(--fd);color:var(--text);letter-spacing:2px">VANTA</span>
+</div>
+</sc-if>
+
+<sc-if value="{{isWelcome}}" hint-placeholder-val="{{ false }}">
+<div style="height:100%;display:flex;flex-direction:column;padding:32px 28px;justify-content:space-between">
+<div style="height:40%;border-radius:20px">
+<image-slot id="atleta-welcome" shape="rounded" radius="20" placeholder="Carregue sua foto"></image-slot>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<h1 style="margin:0;font:700 34px/1.15 var(--fd);color:var(--text)">Seu treino. Seu ritmo. Sua evolução.</h1>
+<p style="margin:0;font:400 16px/1.5 var(--fb);color:var(--text2)">Um plano criado para o seu objetivo e adaptado à sua rotina.</p>
+<button onClick="{{goBasic}}" style="margin-top:8px;border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Começar</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isBasic}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:28px 24px;gap:22px;min-height:100%">
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font:600 13px var(--fb);color:var(--orange)">PASSO 1 DE 5</span>
+<h2 style="margin:0;font:700 24px var(--fd);color:var(--text)">Dados básicos</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<input value="{{profile.name}}" onChange="{{setName}}" placeholder="Nome" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 16px var(--fb)"/>
+<div style="display:flex;gap:12px">
+<input value="{{profile.age}}" onChange="{{setAge}}" placeholder="Idade" style="flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 16px var(--fb)"/>
+<input value="{{profile.weight}}" onChange="{{setWeight}}" placeholder="Peso (kg)" style="flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 16px var(--fb)"/>
+</div>
+<input value="{{profile.height}}" onChange="{{setHeight}}" placeholder="Altura (cm)" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 16px var(--fb)"/>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{goGoal}}" style="border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isGoal}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:28px 24px;gap:20px;min-height:100%">
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font:600 13px var(--fb);color:var(--orange)">PASSO 2 DE 5</span>
+<h2 style="margin:0;font:700 24px var(--fd);color:var(--text)">Qual é o seu objetivo?</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{goalItems}}" as="g" hint-placeholder-count="12">
+<div onClick="{{g.onClick}}" style="{{g.cardStyle}}">
+<span style="{{g.textStyle}}">{{g.label}}</span>
+<sc-if value="{{g.selected}}" hint-placeholder-val="{{ false }}"><span style="width:20px;height:20px;border-radius:50%;background:#000;color:var(--orange);display:flex;align-items:center;justify-content:center;font:700 12px var(--fb)">✓</span></sc-if>
+</div>
+</sc-for>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{goCapacity}}" disabled="{{!profile.goal}}" style="{{goalBtnStyle}}">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isCapacity}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:28px 24px;gap:20px;min-height:100%">
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font:600 13px var(--fb);color:var(--orange)">PASSO 3 DE 5</span>
+<h2 style="margin:0;font:700 24px var(--fd);color:var(--text)">Sua capacidade hoje</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">VOCÊ CORRE ATUALMENTE?</span>
+<div style="display:flex;gap:10px">
+<button onClick="{{setRunsYes}}" style="{{runsYesStyle}}">Sim</button>
+<button onClick="{{setRunsNo}}" style="{{runsNoStyle}}">Não</button>
+</div>
+</div>
+<sc-if value="{{profile.runsNow}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:12px">
+<input value="{{profile.freq}}" onChange="{{setFreq}}" placeholder="Quantas vezes por semana?" style="{{inputStyle}}"/>
+<input value="{{profile.avgDist}}" onChange="{{setAvgDist}}" placeholder="Distância média (km)" style="{{inputStyle}}"/>
+<input value="{{profile.avgPace}}" onChange="{{setAvgPace}}" placeholder="Pace aproximado (min/km)" style="{{inputStyle}}"/>
+<input value="{{profile.maxDist}}" onChange="{{setMaxDist}}" placeholder="Maior distância recente (km)" style="{{inputStyle}}"/>
+</div>
+</sc-if>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">NÍVEL DE FORÇA</span>
+<sc-for list="{{strengthItems}}" as="s" hint-placeholder-count="4">
+<div onClick="{{s.onClick}}" style="{{s.cardStyle}}"><span style="{{s.textStyle}}">{{s.label}}</span></div>
+</sc-for>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{goAvailability}}" style="border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isAvailability}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:28px 24px;gap:20px;min-height:100%">
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font:600 13px var(--fb);color:var(--orange)">PASSO 4 DE 5</span>
+<h2 style="margin:0;font:700 24px var(--fd);color:var(--text)">Sua disponibilidade</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">QUANTOS DIAS POR SEMANA?</span>
+<div style="display:flex;gap:8px">
+<sc-for list="{{dayItems}}" as="d" hint-placeholder-count="7">
+<div onClick="{{d.onClick}}" style="{{d.cardStyle}}">{{d.label}}</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">QUANTO TEMPO?</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{durationItems}}" as="du" hint-placeholder-count="5">
+<div onClick="{{du.onClick}}" style="{{du.cardStyle}}">{{du.label}}</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">ONDE?</span>
+<div style="display:flex;gap:8px">
+<sc-for list="{{locationItems}}" as="lo" hint-placeholder-count="3">
+<div onClick="{{lo.onClick}}" style="{{lo.cardStyle}}">{{lo.label}}</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">EQUIPAMENTOS</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{equipItems}}" as="eq" hint-placeholder-count="7">
+<div onClick="{{eq.onClick}}" style="{{eq.cardStyle}}">{{eq.label}}</div>
+</sc-for>
+</div>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{goGenerating}}" style="border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Gerar meu plano</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isGenerating}}" hint-placeholder-val="{{ false }}">
+<div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:28px">
+<div style="width:64px;height:64px;border-radius:50%;border:4px solid var(--surface2);border-top-color:var(--orange);animation:spin 1s linear infinite"></div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<span style="font:600 16px var(--fb);color:var(--text);animation:pulse 1.4s ease-in-out infinite">Analisando seu perfil...</span>
+</div>
+</sc-if>
+
+<sc-if value="{{isCreated}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:28px 24px;gap:22px;min-height:100%">
+<div style="flex:1"></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center">
+<div style="width:56px;height:56px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font:700 26px var(--fb);color:#000">✓</div>
+<h2 style="margin:0;font:700 26px var(--fd);color:var(--text)">Seu plano está pronto.</h2>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;width:100%;display:flex;flex-direction:column;gap:14px;text-align:left">
+<span style="font:700 20px var(--fd);color:var(--orange)">{{planName}}</span>
+<span style="font:500 14px var(--fb);color:var(--text2)">8 semanas · 4 treinos por semana</span>
+<div style="height:1px;background:var(--border)"></div>
+<span style="font:600 13px var(--fb);color:var(--text2)">OBJETIVO</span>
+<span style="font:600 16px var(--fb);color:var(--text)">{{profile.goal}}</span>
+</div>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{goApp}}" style="border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Ver meu plano</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isApp}}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100%;display:flex;flex-direction:column">
+
+<sc-if value="{{tabHoje}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;padding:24px 20px 100px;gap:20px">
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="font:700 22px var(--fd);color:var(--text)">Bom dia, {{firstName}} 👋</span>
+<span style="font:500 14px var(--fb);color:var(--text2)">Semana 4 de 8</span>
+</div>
+
+<sc-if value="{{!todayCompleted}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{isRestDay}}" hint-placeholder-val="{{ false }}">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:6px">
+<span style="font:700 16px var(--fd);color:var(--recovery)">Hoje é dia de recuperação</span>
+<span style="font:500 14px var(--fb);color:var(--text2)">Seu próximo treino é amanhã.</span>
+</div>
+</sc-if>
+<sc-if value="{{!isRestDay}}" hint-placeholder-val="{{ true }}">
+<div style="background:linear-gradient(160deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:40px;height:40px;border-radius:12px;background:var(--orange);display:flex;align-items:center;justify-content:center">
+<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#000" stroke-width="2"/><path d="M10 5v5l3 3" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>
+</div>
+<div style="display:flex;flex-direction:column">
+<span style="font:600 12px var(--fb);color:var(--text2)">SEU TREINO DE HOJE</span>
+<span style="font:700 18px var(--fd);color:var(--text)">Corrida intervalada</span>
+</div>
+</div>
+<div style="display:flex;gap:18px">
+<span style="font:600 14px var(--fb);color:var(--text2)">42 min</span>
+<span style="font:600 14px var(--fb);color:var(--text2)">4 × 800 m</span>
+<span style="font:700 12px var(--fb);color:var(--z4);background:rgba(242,153,74,.15);padding:3px 8px;border-radius:6px">Z4</span>
+</div>
+<button onClick="{{openWorkoutDetail}}" style="border:none;background:var(--orange);color:#000;font:700 16px var(--fb);padding:16px;border-radius:14px;cursor:pointer">COMEÇAR TREINO</button>
+</div>
+</sc-if>
+</sc-if>
+<sc-if value="{{todayCompleted}}" hint-placeholder-val="{{ false }}">
+<div style="background:var(--surface);border:1px solid var(--success);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:6px">
+<span style="font:700 16px var(--fd);color:var(--success)">Treino concluído ✓</span>
+<span style="font:500 14px var(--fb);color:var(--text2)">94% de aderência. Seu próximo treino é sexta.</span>
+</div>
+</sc-if>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<span style="font:700 13px var(--fb);color:var(--text2);letter-spacing:.5px">SEU PROGRESSO</span>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px">
+<span style="font:700 20px var(--fd);color:var(--text)">12/24</span>
+<span style="font:500 11px var(--fb);color:var(--text2)">treinos</span>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px">
+<span style="font:700 20px var(--fd);color:var(--orange)">91%</span>
+<span style="font:500 11px var(--fb);color:var(--text2)">aderência</span>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px">
+<span style="font:700 20px var(--fd);color:var(--text)">{{distKmToday}}</span>
+<span style="font:500 11px var(--fb);color:var(--text2)">distância</span>
+</div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:700 13px var(--fb);color:var(--text2);letter-spacing:.5px">PRÓXIMO TREINO</span>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px">
+<div style="width:34px;height:34px;border-radius:10px;background:var(--orangeD);flex-shrink:0"></div>
+<div style="display:flex;flex-direction:column">
+<span style="font:600 15px var(--fb);color:var(--text)">Sexta — Força</span>
+<span style="font:500 13px var(--fb);color:var(--text2)">Agachamento, flexão, remada</span>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{tabPlano}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:24px 20px 100px;gap:18px">
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="font:700 22px var(--fd);color:var(--text)">{{planName}}</span>
+<span style="font:500 14px var(--fb);color:var(--text2)">Semana 4 de 8</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{planDays}}" as="pd" hint-placeholder-count="4">
+<div onClick="{{pd.onClick}}" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer">
+<span style="{{pd.iconStyle}}">{{pd.icon}}</span>
+<div style="display:flex;flex-direction:column;flex:1">
+<span style="font:600 15px var(--fb);color:var(--text)">{{pd.day}} — {{pd.title}}</span>
+<span style="font:500 13px var(--fb);color:var(--text2)">{{pd.subtitle}}</span>
+</div>
+<span style="{{pd.statusStyle}}">{{pd.status}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{tabTreinos}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:24px 20px 100px;gap:18px">
+<span style="font:700 22px var(--fd);color:var(--text)">Biblioteca de exercícios</span>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{exerciseItems}}" as="ex" hint-placeholder-count="4">
+<div onClick="{{ex.onClick}}" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer">
+<div style="{{ex.thumbStyle}}"></div>
+<div style="display:flex;flex-direction:column;flex:1">
+<span style="font:600 15px var(--fb);color:var(--text)">{{ex.name}}</span>
+<span style="font:500 13px var(--fb);color:var(--text2)">{{ex.category}} · {{ex.level}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{tabEvolucao}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:24px 20px 100px;gap:20px">
+<span style="font:700 22px var(--fd);color:var(--text)">Este mês</span>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:4px"><span style="font:700 22px var(--fd);color:var(--text)">16</span><span style="font:500 12px var(--fb);color:var(--text2)">treinos</span></div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:4px"><span style="font:700 22px var(--fd);color:var(--orange)">91%</span><span style="font:500 12px var(--fb);color:var(--text2)">aderência</span></div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:4px"><span style="font:700 22px var(--fd);color:var(--text)">{{distKmMonth}}</span><span style="font:500 12px var(--fb);color:var(--text2)">corrida</span></div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:4px"><span style="font:700 22px var(--fd);color:var(--text)">8</span><span style="font:500 12px var(--fb);color:var(--text2)">sessões de força</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;gap:8px">
+<sc-for list="{{filterItems}}" as="fl" hint-placeholder-count="5">
+<div onClick="{{fl.onClick}}" style="{{fl.style}}">{{fl.label}}</div>
+</sc-for>
+</div>
+<span style="font:600 13px var(--fb);color:var(--text2)">PACE POR SEMANA</span>
+<div style="display:flex;align-items:flex-end;gap:8px;height:120px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px">
+<sc-for list="{{paceBars}}" as="b" hint-placeholder-count="8">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:flex-end;height:100%">
+<div style="{{b.style}}"></div>
+<span style="font:500 10px var(--fb);color:var(--text2)">S{{b.week}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">DADOS DO DISPOSITIVO</span>
+<sc-if value="{{anyDeviceConnected}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;border:1px solid var(--border)">
+<sc-for list="{{deviceMetrics}}" as="dm" hint-placeholder-count="5">
+<div style="background:var(--surface);padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
+<span style="font:500 14px var(--fb);color:var(--text2)">{{dm.label}}</span>
+<span style="font:700 14px var(--fb);color:var(--text)">{{dm.value}}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{!anyDeviceConnected}}" hint-placeholder-val="{{ true }}">
+<div style="background:var(--surface);border:1px dashed var(--border);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center">
+<span style="font:500 13px var(--fb);color:var(--text2)">Conecte Strava ou Garmin Connect para ver frequência cardíaca, carga de treino, sono e VO2 max aqui.</span>
+<span onClick="{{goToIntegracoes}}" style="font:600 13px var(--fb);color:var(--orange);cursor:pointer">Ir para Integrações →</span>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{tabPerfil}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;padding:24px 20px 100px;gap:18px">
+<div style="display:flex;align-items:center;gap:14px">
+<div style="width:56px;height:56px;border-radius:50%;background:var(--surface2);border:2px solid var(--orange);display:flex;align-items:center;justify-content:center;font:700 20px var(--fd);color:var(--orange)">{{initials}}</div>
+<div style="display:flex;flex-direction:column">
+<span style="font:700 18px var(--fd);color:var(--text)">{{profile.name}}</span>
+<span style="font:500 13px var(--fb);color:var(--text2)">{{profile.goal}}</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;border:1px solid var(--border)">
+<sc-for list="{{profileRows}}" as="pr" hint-placeholder-count="7">
+<div onClick="{{pr.onClick}}" style="background:var(--surface);padding:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+<span style="font:600 15px var(--fb);color:var(--text)">{{pr.label}}</span>
+<span style="font:600 14px var(--fb);color:var(--text2)">›</span>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{integracoesOpen}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:600 15px var(--fb);color:var(--text)">Strava</span>
+<sc-if value="{{stravaConnected}}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span></sc-if>
+</div>
+<span onClick="{{toggleStrava}}" style="{{stravaStyle}}">{{stravaLabel}}</span>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:600 15px var(--fb);color:var(--text)">Garmin Connect</span>
+<sc-if value="{{garminConnected}}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span></sc-if>
+</div>
+<span onClick="{{toggleGarmin}}" style="{{garminStyle}}">{{garminLabel}}</span>
+</div>
+</div>
+</sc-if>
+<button onClick="{{recalcPlan}}" style="border:1px solid var(--orange);background:transparent;color:var(--orange);font:700 15px var(--fb);padding:16px;border-radius:14px;cursor:pointer">Recalcular meu plano</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showSobre}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:20px;overflow-y:auto">
+<button onClick="{{closeSobre}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<h2 style="margin:0;font:700 22px var(--fd);color:var(--text)">Sobre</h2>
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font:600 15px var(--fb);color:var(--text)">VANTA</span>
+<span style="font:500 13px var(--fb);color:var(--text2)">Protótipo de app de treino pessoal. Uso não comercial.</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px">
+<span style="font:600 14px var(--fb);color:var(--text)">GIFs de exercícios</span>
+<span style="font:500 13px var(--fb);color:var(--text2)">Fornecidos por ExerciseDB (via AscendAPI), usados sob licença gratuita para fins não comerciais.</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showConfig}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:22px;overflow-y:auto">
+<button onClick="{{closeConfig}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<h2 style="margin:0;font:700 22px var(--fd);color:var(--text)">Configurações</h2>
+
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">TEMA</span>
+<div style="display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:4px">
+<sc-for list="{{themeItems}}" as="th" hint-placeholder-count="3">
+<div onClick="{{th.onClick}}" style="{{th.style}}">{{th.label}}</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">UNIDADE DE DISTÂNCIA</span>
+<div style="display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:4px">
+<sc-for list="{{unitItems}}" as="un" hint-placeholder-count="2">
+<div onClick="{{un.onClick}}" style="{{un.style}}">{{un.label}}</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;border:1px solid var(--border)">
+<sc-for list="{{configToggles}}" as="ct" hint-placeholder-count="3">
+<div style="background:var(--surface);padding:16px;display:flex;justify-content:space-between;align-items:center">
+<span style="font:600 15px var(--fb);color:var(--text)">{{ct.label}}</span>
+<div onClick="{{ct.onClick}}" style="{{ct.trackStyle}}"><div style="{{ct.dotStyle}}"></div></div>
+</div>
+</sc-for>
+</div>
+
+<button onClick="{{clearLocalData}}" style="border:1px solid var(--error);background:transparent;color:var(--error);font:700 14px var(--fb);padding:14px;border-radius:14px;cursor:pointer">Limpar dados salvos no aparelho</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showDadosPessoais}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:22px;overflow-y:auto">
+<button onClick="{{closeDadosPessoais}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<h2 style="margin:0;font:700 22px var(--fd);color:var(--text)">Dados pessoais</h2>
+<div style="display:flex;flex-direction:column;gap:14px">
+<input value="{{profile.name}}" onChange="{{setName}}" placeholder="Nome" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 16px var(--fb)"/>
+<div style="display:flex;gap:12px">
+<input value="{{profile.age}}" onChange="{{setAge}}" placeholder="Idade" style="flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 16px var(--fb)"/>
+<input value="{{profile.weight}}" onChange="{{setWeight}}" placeholder="Peso (kg)" style="flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 16px var(--fb)"/>
+</div>
+<input value="{{profile.height}}" onChange="{{setHeight}}" placeholder="Altura (cm)" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 16px var(--fb)"/>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showObjetivo}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:22px;overflow-y:auto">
+<button onClick="{{closeObjetivo}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<h2 style="margin:0;font:700 22px var(--fd);color:var(--text)">Objetivo</h2>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{goalItems}}" as="g" hint-placeholder-count="12">
+<div onClick="{{g.onClick}}" style="{{g.cardStyle}}">
+<span style="{{g.textStyle}}">{{g.label}}</span>
+<sc-if value="{{g.selected}}" hint-placeholder-val="{{ false }}"><span style="width:20px;height:20px;border-radius:50%;background:#000;color:var(--orange);display:flex;align-items:center;justify-content:center;font:700 12px var(--fb)">✓</span></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showCapacidade}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:22px;overflow-y:auto">
+<button onClick="{{closeCapacidade}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<h2 style="margin:0;font:700 22px var(--fd);color:var(--text)">Capacidade</h2>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">VOCÊ CORRE ATUALMENTE?</span>
+<div style="display:flex;gap:10px">
+<button onClick="{{setRunsYes}}" style="{{runsYesStyle}}">Sim</button>
+<button onClick="{{setRunsNo}}" style="{{runsNoStyle}}">Não</button>
+</div>
+</div>
+<sc-if value="{{profile.runsNow}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:12px">
+<input value="{{profile.freq}}" onChange="{{setFreq}}" placeholder="Quantas vezes por semana?" style="{{inputStyle}}"/>
+<input value="{{profile.avgDist}}" onChange="{{setAvgDist}}" placeholder="Distância média (km)" style="{{inputStyle}}"/>
+<input value="{{profile.avgPace}}" onChange="{{setAvgPace}}" placeholder="Pace aproximado (min/km)" style="{{inputStyle}}"/>
+<input value="{{profile.maxDist}}" onChange="{{setMaxDist}}" placeholder="Maior distância recente (km)" style="{{inputStyle}}"/>
+</div>
+</sc-if>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">NÍVEL DE FORÇA</span>
+<sc-for list="{{strengthItems}}" as="s" hint-placeholder-count="4">
+<div onClick="{{s.onClick}}" style="{{s.cardStyle}}"><span style="{{s.textStyle}}">{{s.label}}</span></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showDisponibilidade}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:22px;overflow-y:auto">
+<button onClick="{{closeDisponibilidade}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<h2 style="margin:0;font:700 22px var(--fd);color:var(--text)">Disponibilidade</h2>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">QUANTOS DIAS POR SEMANA?</span>
+<div style="display:flex;gap:8px">
+<sc-for list="{{dayItems}}" as="d" hint-placeholder-count="7">
+<div onClick="{{d.onClick}}" style="{{d.cardStyle}}">{{d.label}}</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">QUANTO TEMPO?</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{durationItems}}" as="du" hint-placeholder-count="5">
+<div onClick="{{du.onClick}}" style="{{du.cardStyle}}">{{du.label}}</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">ONDE?</span>
+<div style="display:flex;gap:8px">
+<sc-for list="{{locationItems}}" as="lo" hint-placeholder-count="3">
+<div onClick="{{lo.onClick}}" style="{{lo.cardStyle}}">{{lo.label}}</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showEquipamentos}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:22px;overflow-y:auto">
+<button onClick="{{closeEquipamentos}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<h2 style="margin:0;font:700 22px var(--fd);color:var(--text)">Equipamentos</h2>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{equipItems}}" as="eq" hint-placeholder-count="7">
+<div onClick="{{eq.onClick}}" style="{{eq.cardStyle}}">{{eq.label}}</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div style="position:absolute;bottom:0;left:0;right:0;height:84px;background:var(--navbar-bg);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;padding:8px 6px 26px;z-index:50">
+<sc-for list="{{navItems}}" as="nv" hint-placeholder-count="5">
+<div onClick="{{nv.onClick}}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer">
+<div style="{{nv.dotStyle}}"></div>
+<span style="{{nv.labelStyle}}">{{nv.label}}</span>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{showWorkoutDetail}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:20px;overflow-y:auto">
+<button onClick="{{closeDetail}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<div style="display:flex;flex-direction:column;gap:4px">
+<span style="font:600 13px var(--fb);color:var(--orange)">CORRIDA INTERVALADA</span>
+<h2 style="margin:0;font:700 24px var(--fd);color:var(--text)">Semana 4 · Treino 2</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{aerobicBlocks}}" as="bl" hint-placeholder-count="3">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="font:600 15px var(--fb);color:var(--text)">{{bl.label}}</span>
+<span style="font:500 13px var(--fb);color:var(--text2)">{{bl.detail}}</span>
+</div>
+<span style="font:700 12px var(--fb);color:var(--z4);background:rgba(242,153,74,.15);padding:4px 10px;border-radius:8px">{{bl.zone}}</span>
+</div>
+</sc-for>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{startAerobic}}" style="border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Iniciar treino</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showAerobicExec}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:28px 24px;gap:28px">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<span style="font:600 13px var(--fb);color:var(--text2)">{{execBlockLabel}}</span>
+<span style="font:700 12px var(--fb);color:var(--z4);background:rgba(242,153,74,.15);padding:4px 10px;border-radius:8px">{{execZone}}</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<span style="font:600 16px var(--fb);color:var(--text2)">{{execRepLabel}}</span>
+<span style="font:800 64px var(--fd);color:var(--text);font-variant-numeric:tabular-nums">{{execTimeLabel}}</span>
+<span style="font:600 18px var(--fb);color:var(--orange)">{{execPaceLabel}}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px">
+<span style="font:500 12px var(--fb);color:var(--text2)">PRÓXIMO</span>
+<span style="font:600 14px var(--fb);color:var(--text)">{{execNextLabel}}</span>
+</div>
+<div style="display:flex;gap:12px">
+<button onClick="{{togglePause}}" style="flex:1;border:1px solid var(--border);background:var(--surface);color:var(--text);font:700 15px var(--fb);padding:16px;border-radius:14px;cursor:pointer">{{pauseLabel}}</button>
+<button onClick="{{advanceExec}}" style="flex:2;border:none;background:var(--orange);color:#000;font:700 16px var(--fb);padding:16px;border-radius:14px;cursor:pointer">{{advanceLabel}}</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showAerobicResult}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:28px 24px;gap:22px;overflow-y:auto">
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+<span style="font:600 14px var(--fb);color:var(--text2)">Treino concluído</span>
+<span style="font:800 44px var(--fd);color:var(--orange)">94%</span>
+<span style="font:500 14px var(--fb);color:var(--text2)">de aderência</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;font:600 12px var(--fb);color:var(--text2);padding:0 4px"><span style="flex:1">MÉTRICA</span><span style="flex:1;text-align:center">PLANEJADO</span><span style="flex:1;text-align:center">REALIZADO</span></div>
+<sc-for list="{{resultRows}}" as="rr" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px"><span style="flex:1;font:600 14px var(--fb);color:var(--text)">{{rr.label}}</span><span style="flex:1;text-align:center;font:500 14px var(--fb);color:var(--text2)">{{rr.planned}}</span><span style="flex:1;text-align:center;font:600 14px var(--fb);color:var(--text)">{{rr.actual}}</span></div>
+</sc-for>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{finishAerobic}}" style="border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Concluir</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showStrengthDetail}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:20px;overflow-y:auto">
+<button onClick="{{closeDetail}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<div style="display:flex;flex-direction:column;gap:4px">
+<span style="font:600 13px var(--fb);color:var(--orangeD)">FORÇA — CASA</span>
+<h2 style="margin:0;font:700 24px var(--fd);color:var(--text)">Semana 4 · Treino de força</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{strengthPlan}}" as="sp" hint-placeholder-count="3">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;justify-content:space-between;align-items:center">
+<span style="font:600 15px var(--fb);color:var(--text)">{{sp.name}}</span>
+<span style="font:600 14px var(--fb);color:var(--text2)">{{sp.sets}} × {{sp.reps}}</span>
+</div>
+</sc-for>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{startStrength}}" style="border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Iniciar treino</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showStrengthExec}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:28px 24px;gap:22px">
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="font:600 13px var(--fb);color:var(--text2)">{{strExerciseIndexLabel}}</span>
+<h2 style="margin:0;font:700 24px var(--fd);color:var(--text)">{{strExerciseName}}</h2>
+</div>
+<div style="height:160px;border-radius:16px;background:repeating-linear-gradient(45deg,var(--surface),var(--surface) 8px,var(--surface2) 8px,var(--surface2) 16px);display:flex;align-items:center;justify-content:center;border:1px dashed var(--border)">
+<span style="font:500 12px var(--fb);color:var(--text2)">[ GIF de execução ]</span>
+</div>
+<p style="margin:0;font:400 14px/1.5 var(--fb);color:var(--text2)">{{strExerciseDesc}}</p>
+<sc-if value="{{!strResting}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:14px;align-items:center">
+<span style="font:600 15px var(--fb);color:var(--text2)">{{strSetLabel}}</span>
+<span style="font:800 48px var(--fd);color:var(--text)">{{strRepsLabel}}</span>
+<button onClick="{{finishSet}}" style="width:100%;border:none;background:var(--orange);color:#000;font:700 16px var(--fb);padding:16px;border-radius:14px;cursor:pointer">CONCLUIR SÉRIE</button>
+</div>
+</sc-if>
+<sc-if value="{{strResting}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;align-items:center">
+<span style="font:600 15px var(--fb);color:var(--text2)">Descanso</span>
+<span style="font:800 48px var(--fd);color:var(--orange)">{{strRestLabel}}</span>
+<button onClick="{{skipRest}}" style="border:1px solid var(--border);background:var(--surface);color:var(--text);font:600 14px var(--fb);padding:12px 20px;border-radius:12px;cursor:pointer">Pular descanso</button>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{showStrengthResult}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:28px 24px;gap:22px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+<span style="font:600 14px var(--fb);color:var(--text2)">Treino de força concluído</span>
+<span style="font:800 44px var(--fd);color:var(--orange)">100%</span>
+<span style="font:500 14px var(--fb);color:var(--text2)">das séries completadas</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{strengthPlan}}" as="sp" hint-placeholder-count="3">
+<div style="display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px"><span style="font:600 14px var(--fb);color:var(--text)">{{sp.name}}</span><span style="font:500 13px var(--fb);color:var(--text2)">{{sp.sets}} × {{sp.reps}} concluídas</span></div>
+</sc-for>
+</div>
+<div style="flex:1"></div>
+<button onClick="{{finishStrength}}" style="border:none;background:var(--orange);color:#000;font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:pointer">Concluir</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showExerciseDetail}}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:var(--bg);z-index:90;display:flex;flex-direction:column;padding:24px 20px 28px;gap:18px;overflow-y:auto">
+<button onClick="{{closeDetail}}" style="align-self:flex-start;border:none;background:var(--surface);color:var(--text);width:36px;height:36px;border-radius:50%;font:600 16px var(--fb);cursor:pointer">←</button>
+<h2 style="margin:0;font:700 24px var(--fd);color:var(--text)">{{exDetail.name}}</h2>
+<div style="{{exDetail.gifBoxStyle}}">
+<sc-if value="{{exDetail.showGifLabel}}" hint-placeholder-val="{{ true }}">
+<span style="font:500 12px var(--fb);color:var(--text2)">{{exDetail.gifStatusLabel}}</span>
+</sc-if>
+</div>
+<sc-if value="{{exDetail.gifUrl}}" hint-placeholder-val="{{ false }}">
+<span style="font:500 10px var(--fb);color:var(--text2);opacity:0.6">GIF via AscendAPI (ExerciseDB)</span>
+</sc-if>
+<p style="margin:0;font:400 14px/1.5 var(--fb);color:var(--text2)">{{exDetail.desc}}</p>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">MAPA MUSCULAR</span>
+<div style="display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px">
+<div style="width:64px;height:100px;border-radius:30px;background:var(--mn);position:relative;flex-shrink:0">
+<div style="position:absolute;top:14px;left:12px;width:40px;height:30px;border-radius:8px;background:var(--mp)"></div>
+<div style="position:absolute;bottom:10px;left:8px;width:20px;height:24px;border-radius:6px;background:var(--ms)"></div>
+<div style="position:absolute;bottom:10px;right:8px;width:20px;height:24px;border-radius:6px;background:var(--ms)"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:var(--mp)"></span><span style="font:600 13px var(--fb);color:var(--text)">{{exDetail.primary}}</span></div>
+<div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:var(--ms)"></span><span style="font:500 13px var(--fb);color:var(--text2)">{{exDetail.secondary}}</span></div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 13px var(--fb);color:var(--text2)">PROGRESSÃO — {{exDetail.movement}}</span>
+<div style="display:flex;flex-direction:column;gap:0">
+<sc-for list="{{exDetail.progressionItems}}" as="pg" hint-placeholder-count="6">
+<div style="display:flex;align-items:center;gap:12px;padding:8px 0">
+<div style="{{pg.dotStyle}}"></div>
+<span style="{{pg.textStyle}}">{{pg.label}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:470,&quot;height&quot;:900},&quot;todayState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Treino agendado&quot;,&quot;options&quot;:[&quot;Treino agendado&quot;,&quot;Dia de descanso&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Estado&quot;},&quot;unitSystem&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;km&quot;,&quot;options&quot;:[&quot;km&quot;,&quot;mi&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Estado&quot;}}">
+class Component extends DCLogic {
+  state = {
+    obStep: 'splash',
+    profile: { name:'', age:'', weight:'', height:'', goal:null, customTarget:'',
+      runsNow:null, freq:'', avgDist:'', avgPace:'', maxDist:'', strengthLevel:null,
+      days:[], duration:null, location:null, equipment:[] },
+    activeTab: 'hoje', detail: null, todayCompleted:false, integracoesOpen:false, activeFilter:'30 dias', selectedExercise:null,
+    gifCache: {}, gifStatus: {},
+    settings: { notifications:true, theme:'Sistema', unit:'km', gps:true, saveData:true },
+    integrations: { strava:false, garmin:false },
+  };
+
+  persistKey = 'vanta-app-state';
+  themePalettes = {
+    dark: { bg:'#0A0A0A', surface:'#151515', surface2:'#202020', border:'#2A2A2A', text:'#FFFFFF', text2:'#A3A3A3', 'statusbar-fg':'#fff', 'navbar-bg':'rgba(10,10,10,.9)' },
+    light: { bg:'#F5F5F5', surface:'#FFFFFF', surface2:'#ECECEC', border:'#DEDEDE', text:'#0A0A0A', text2:'#5C5C5C', 'statusbar-fg':'#000', 'navbar-bg':'rgba(255,255,255,.85)' },
+  };
+
+  componentDidMount() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(this.persistKey) || 'null');
+      if (saved) this.setState({ obStep: saved.obStep ?? this.state.obStep, profile: saved.profile ?? this.state.profile, todayCompleted: !!saved.todayCompleted, settings: saved.settings ?? this.state.settings, integrations: saved.integrations ?? this.state.integrations });
+    } catch (e) {}
+    this._mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+    this._mqListener = () => { if (this.state.settings.theme === 'Sistema') this.forceUpdate(); };
+    if (this._mq && this._mq.addEventListener) this._mq.addEventListener('change', this._mqListener);
+  }
+
+  persist = () => {
+    const { obStep, profile, todayCompleted, settings, integrations } = this.state;
+    try { localStorage.setItem(this.persistKey, JSON.stringify({ obStep, profile, todayCompleted, settings, integrations })); } catch (e) {}
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.obStep !== this.state.obStep || prevState.profile !== this.state.profile || prevState.todayCompleted !== this.state.todayCompleted || prevState.settings !== this.state.settings || prevState.integrations !== this.state.integrations) this.persist();
+  }
+
+  toggleProvider = (provider) => this.setState(s=>({ integrations:{...s.integrations, [provider]: !s.integrations[provider]} }));
+
+  loadGif = (id) => {
+    const gifCache = this.state.gifCache, gifStatus = this.state.gifStatus;
+    if (gifCache[id] || gifStatus[id]==='loading') return;
+    const ex = this.exercisesData.find(e=>e.id===id);
+    if (!ex) return;
+    if (ex.gifUrl) { this.setState({ gifCache: { ...gifCache, [id]:ex.gifUrl }, gifStatus: { ...gifStatus, [id]:'done' } }); return; }
+    this.setState({ gifStatus: { ...gifStatus, [id]:'loading' } });
+    fetch(`https://oss.exercisedb.dev/api/v1/exercises?name=${encodeURIComponent(ex.apiQuery)}&limit=20`)
+      .then(r=>r.json())
+      .then(data=>{
+        const list = Array.isArray(data) ? data : (data.data || data.exercises || []);
+        const q = ex.apiQuery.toLowerCase();
+        let best = null;
+        if (list && list.length) {
+          const exact = list.find(e=>(e.name||'').toLowerCase()===q);
+          const bodyweight = list.filter(e=>(e.equipments||[]).some(eq=>/bodyweight|body weight/i.test(eq)) && (e.name||'').toLowerCase().includes(q));
+          const simple = list.filter(e=>(e.name||'').toLowerCase().includes(q));
+          const pool = exact ? [exact] : (bodyweight.length ? bodyweight : (simple.length ? simple : list));
+          best = pool.slice().sort((a,b)=>(a.name||'').length-(b.name||'').length)[0];
+        }
+        const gifUrl = best && best.gifUrl;
+        if (gifUrl) this.setState({ gifCache: { ...this.state.gifCache, [id]:gifUrl }, gifStatus: { ...this.state.gifStatus, [id]:'done' } });
+        else this.setState({ gifStatus: { ...this.state.gifStatus, [id]:'error' } });
+      })
+      .catch(()=>this.setState({ gifStatus: { ...this.state.gifStatus, [id]:'error' } }));
+  };
+
+  goalsList = ['Melhorar condicionamento','Começar a correr','Correr 5 km','Correr 10 km',
+    'Aumentar distância','Melhorar pace','Emagrecimento','Ganho de força',
+    'Ganho de massa muscular','Melhorar mobilidade','Criar rotina','Combinar força + cardio'];
+
+  chip(selected){
+    return `display:flex;align-items:center;justify-content:space-between;cursor:pointer;` +
+      `background:${selected?'var(--orange)':'var(--surface)'};border:1px solid ${selected?'var(--orange)':'var(--border)'};` +
+      `border-radius:14px;padding:16px;`;
+  }
+  chipText(selected){
+    return `font:600 15px var(--fb);color:${selected?'#000':'var(--text)'}`;
+  }
+
+  goWelcome = () => this.setState({ obStep:'welcome' });
+  goBasic = () => this.setState({ obStep:'basic' });
+  goGoal = () => this.setState({ obStep:'goal' });
+  goCapacity = () => { if(this.state.profile.goal) this.setState({ obStep:'capacity' }); };
+  goAvailability = () => this.setState({ obStep:'availability' });
+  goGenerating = () => { this.setState({ obStep:'generating' }); clearTimeout(this._genT); this._genT = setTimeout(()=>this.setState({ obStep:'created' }), 2200); };
+  goApp = () => this.setState({ obStep:'app' });
+  selectTab = (tab) => this.setState({ activeTab: tab, detail: null });
+  openWorkoutDetail = () => this.setState({ detail: 'workoutDetail' });
+  closeDetail = () => { clearInterval(this._execT); clearInterval(this._restT); this.setState({ detail:null }); };
+  recalcPlan = () => this.setState({ obStep:'generating' }, ()=>{ clearTimeout(this._genT); this._genT = setTimeout(()=>this.setState({ obStep:'created' }), 1800); });
+  toggleIntegracoes = () => this.setState(s=>({ integracoesOpen: !s.integracoesOpen }));
+
+  planDaysData = [
+    { day:'Segunda', title:'Corrida leve', subtitle:'30 min · Z2', status:'✓', statusColor:'var(--success)', type:'aerobic' },
+    { day:'Quarta', title:'Intervalado', subtitle:'42 min · 4×800m Z4', status:'✓', statusColor:'var(--success)', type:'aerobic' },
+    { day:'Sexta', title:'Força', subtitle:'Agachamento, flexão, remada', status:'Próximo', statusColor:'var(--orange)', type:'strength' },
+    { day:'Domingo', title:'Longão', subtitle:'60 min · Z2', status:'Agendado', statusColor:'var(--text2)', type:'aerobic' },
+  ];
+  exercisesData = [
+    { id:'flexao', name:'Flexão', apiQuery:'push up', gifUrl:'https://static.exercisedb.dev/media/B1EVP9F.gif', category:'Calistenia', level:'Progressão nível 4', movement:'Empurrar horizontal',
+      desc:'Mantenha o corpo reto da cabeça aos calcanhares. Desça até o peito quase tocar o chão e empurre de volta.',
+      primary:'Peitoral', secondary:'Tríceps, deltoide anterior, core',
+      progression:['Flexão na parede','Flexão inclinada','Flexão com joelhos','Flexão tradicional','Flexão fechada','Flexão declinada'], currentLevel:3 },
+    { id:'agachamento', name:'Agachamento', apiQuery:'squat', gifUrl:'https://static.exercisedb.dev/media/6YUfHPL.gif', category:'Calistenia', level:'Progressão nível 3', movement:'Agachar',
+      desc:'Pés na largura dos ombros. Desça flexionando quadril e joelhos mantendo o peito erguido.',
+      primary:'Quadríceps', secondary:'Glúteos, posterior de coxa, core',
+      progression:['Agachamento na cadeira','Agachamento assistido','Agachamento livre','Agachamento búlgaro','Pistol squat assistido'], currentLevel:2 },
+    { id:'remada', name:'Remada curvada', apiQuery:'bent over row', gifUrl:'https://static.exercisedb.dev/media/eZyBC3j.gif', category:'Academia', level:'Progressão nível 2', movement:'Puxar horizontal',
+      desc:'Tronco inclinado à frente, puxe a barra em direção ao abdômen mantendo as costas retas.',
+      primary:'Dorsal', secondary:'Bíceps, trapézio, deltoide posterior',
+      progression:['Remada com elástico','Remada unilateral','Remada curvada livre','Remada pendlay'], currentLevel:1 },
+    { id:'prancha', name:'Prancha', apiQuery:'plank', gifUrl:'https://static.exercisedb.dev/media/CosupLu.gif', category:'Calistenia', level:'Progressão nível 2', movement:'Estabilização de core',
+      desc:'Apoie antebraços e pontas dos pés. Mantenha o corpo alinhado sem deixar o quadril cair.',
+      primary:'Core', secondary:'Ombros, glúteos',
+      progression:['Prancha com joelhos','Prancha padrão','Prancha com elevação de perna','Prancha com toque de ombro'], currentLevel:1 },
+  ];
+  filterLabels = ['7 dias','30 dias','3 meses','6 meses','1 ano'];
+  profileRowLabels = ['Dados pessoais','Objetivo','Capacidade','Disponibilidade','Equipamentos','Integrações','Configurações','Sobre'];
+  openSobre = () => this.setState({ detail:'sobre' });
+  closeSobre = () => this.setState({ detail:null });
+  openConfig = () => this.setState({ detail:'config' });
+  closeConfig = () => this.setState({ detail:null });
+  openDadosPessoais = () => this.setState({ detail:'dadosPessoais' });
+  closeDadosPessoais = () => this.setState({ detail:null });
+  openObjetivo = () => this.setState({ detail:'objetivo' });
+  closeObjetivo = () => this.setState({ detail:null });
+  openCapacidade = () => this.setState({ detail:'capacidade' });
+  closeCapacidade = () => this.setState({ detail:null });
+  openDisponibilidade = () => this.setState({ detail:'disponibilidade' });
+  closeDisponibilidade = () => this.setState({ detail:null });
+  openEquipamentos = () => this.setState({ detail:'equipamentos' });
+  closeEquipamentos = () => this.setState({ detail:null });
+  toggleSetting = (key) => this.setState(s=>({ settings:{...s.settings, [key]:!s.settings[key]} }));
+  setTheme = (v) => this.setState(s=>({ settings:{...s.settings, theme:v} }));
+  setUnit = (v) => this.setState(s=>({ settings:{...s.settings, unit:v} }));
+  clearLocalData = () => { try{ localStorage.removeItem(this.persistKey); }catch(e){} this.setState({ todayCompleted:false }); };
+
+  selectFilter = (f) => this.setState({ activeFilter: f });
+  openExercise = (id) => { this.setState({ detail:'exerciseDetail', selectedExercise: id }); this.loadGif(id); };
+  openPlanDay = (d) => this.setState({ detail: d.type==='strength' ? 'strengthDetail' : 'workoutDetail' });
+
+  aerobicBlocksData = [
+    { label:'Aquecimento', detail:'10 min', zone:'Z1/Z2' },
+    { label:'Intervalado — 4 × 800 m', detail:'Recuperação 2 min entre séries', zone:'Z4' },
+    { label:'Desaquecimento', detail:'10 min', zone:'Z1/Z2' },
+  ];
+  strengthPlanData = [
+    { name:'Agachamento', sets:3, reps:12 },
+    { name:'Flexão', sets:3, reps:12 },
+    { name:'Remada curvada', sets:3, reps:10 },
+  ];
+
+  fmt(sec){ const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,'0')}`; }
+
+  startAerobic = () => {
+    this.setState({ detail:'aerobicExec', exec:{ phase:'warmup', rep:1, elapsed:0, repElapsed:0, resting:false, restRemaining:120, running:true } });
+    clearInterval(this._execT);
+    this._execT = setInterval(()=>{
+      this.setState(s=>{
+        if(!s.exec || !s.exec.running) return null;
+        const e = {...s.exec, elapsed:s.exec.elapsed+1, repElapsed:s.exec.repElapsed+1};
+        if(e.resting){ e.restRemaining = Math.max(0, e.restRemaining-1); if(e.restRemaining===0) return this.advanceExecState(e); }
+        return { exec:e };
+      });
+    }, 1000);
+  };
+  togglePause = () => this.setState(s=>({ exec:{...s.exec, running: !s.exec.running} }));
+  advanceExecState(e){
+    if(e.phase==='warmup'){ return { exec:{...e, phase:'main', rep:1, resting:false, repElapsed:0 } }; }
+    if(e.phase==='main' && !e.resting){
+      if(e.rep>=4) return { exec:{...e, phase:'cooldown', resting:false, repElapsed:0 } };
+      return { exec:{...e, resting:true, restRemaining:120 } };
+    }
+    if(e.phase==='main' && e.resting){ return { exec:{...e, resting:false, rep:e.rep+1, repElapsed:0 } }; }
+    return { exec:e };
+  }
+  advanceExec = () => {
+    if(this.state.exec && this.state.exec.phase==='cooldown'){ clearInterval(this._execT); this.setState({ detail:'aerobicResult' }); return; }
+    this.setState(s=> this.advanceExecState(s.exec));
+  };
+  finishAerobic = () => { clearInterval(this._execT); this.setState({ detail:null, todayCompleted:true, activeTab:'hoje' }); };
+
+  startStrength = () => { this.setState({ detail:'strengthExec', strExec:{ exIndex:0, set:1, resting:false, restRemaining:60 } }); };
+  finishSet = () => {
+    this.setState(s=>{
+      const plan = this.strengthPlanData; const ex = s.strExec;
+      if(ex.set < plan[ex.exIndex].sets) return { strExec:{...ex, resting:true, restRemaining:60} };
+      if(ex.exIndex < plan.length-1) return { strExec:{ exIndex:ex.exIndex+1, set:1, resting:false, restRemaining:60 } };
+      return { detail:'strengthResult' };
+    });
+    clearInterval(this._restT);
+    this._restT = setInterval(()=>{
+      this.setState(s=>{
+        if(!s.strExec || !s.strExec.resting) { clearInterval(this._restT); return null; }
+        const r = s.strExec.restRemaining-1;
+        if(r<=0){ clearInterval(this._restT); return { strExec:{...s.strExec, resting:false, set:s.strExec.set+1, restRemaining:60} }; }
+        return { strExec:{...s.strExec, restRemaining:r} };
+      });
+    }, 1000);
+  };
+  skipRest = () => { clearInterval(this._restT); this.setState(s=>({ strExec:{...s.strExec, resting:false, set:s.strExec.set+1, restRemaining:60} })); };
+  finishStrength = () => { this.setState({ detail:null, activeTab:'plano' }); };
+  componentWillUnmount(){ clearTimeout(this._genT); clearInterval(this._execT); clearInterval(this._restT); if (this._mq && this._mq.removeEventListener) this._mq.removeEventListener('change', this._mqListener); }
+
+  strengthLevels = ['Nunca treinei','Iniciante','Intermediário','Avançado'];
+  dayLabels = [['D','Domingo'],['S','Segunda'],['T','Terça'],['Q','Quarta'],['Q','Quinta'],['S','Sexta'],['S','Sábado']];
+  durationOpts = ['15 min','30 min','45 min','60 min','90+ min'];
+  locationOpts = ['Casa','Academia','Ao ar livre'];
+  equipmentOpts = ['Nenhum','Halteres','Elásticos','Barra fixa','Máquinas','Barras/pesos','Outros'];
+
+  setRunsYes = () => this.setState(s=>({ profile:{...s.profile, runsNow:true} }));
+  setRunsNo = () => this.setState(s=>({ profile:{...s.profile, runsNow:false} }));
+  setFreq = (e)=>this.setField('freq', e);
+  setAvgDist = (e)=>this.setField('avgDist', e);
+  setAvgPace = (e)=>this.setField('avgPace', e);
+  setMaxDist = (e)=>this.setField('maxDist', e);
+  selectStrength(l){ this.setState(s=>({ profile:{...s.profile, strengthLevel:l} })); }
+  toggleDay(idx){ this.setState(s=>{ const days=s.profile.days.includes(idx)?s.profile.days.filter(d=>d!==idx):[...s.profile.days, idx]; return { profile:{...s.profile, days} }; }); }
+  selectDuration(d){ this.setState(s=>({ profile:{...s.profile, duration:d} })); }
+  selectLocation(l){ this.setState(s=>({ profile:{...s.profile, location:l} })); }
+  toggleEquip(e){ this.setState(s=>{ const equipment=s.profile.equipment.includes(e)?s.profile.equipment.filter(x=>x!==e):[...s.profile.equipment, e]; return { profile:{...s.profile, equipment} }; }); }
+
+  setField(field, e){ this.setState(s=>({ profile:{...s.profile,[field]:e.target.value} })); }
+  setName = (e)=>this.setField('name', e);
+  setAge = (e)=>this.setField('age', e);
+  setWeight = (e)=>this.setField('weight', e);
+  setHeight = (e)=>this.setField('height', e);
+
+  selectGoal(g){ this.setState(s=>({ profile:{...s.profile, goal:g} })); }
+
+  chipSmall(selected){
+    return `cursor:pointer;background:${selected?'var(--orange)':'var(--surface)'};border:1px solid ${selected?'var(--orange)':'var(--border)'};` +
+      `border-radius:12px;padding:12px 14px;font:600 14px var(--fb);color:${selected?'#000':'var(--text)'};text-align:center`;
+  }
+
+  navDef = [
+    { id:'hoje', label:'Hoje' }, { id:'plano', label:'Plano' }, { id:'treinos', label:'Treinos' },
+    { id:'evolucao', label:'Evolução' }, { id:'perfil', label:'Perfil' },
+  ];
+
+  renderVals(){
+    const { obStep, profile, activeTab, todayCompleted, integracoesOpen, activeFilter, selectedExercise } = this.state;
+    const navItems = this.navDef.map(n=>({
+      label:n.label,
+      onClick: ()=>this.selectTab(n.id),
+      dotStyle: `width:8px;height:8px;border-radius:50%;background:${activeTab===n.id?'var(--orange)':'transparent'}`,
+      labelStyle: `font:600 11px var(--fb);color:${activeTab===n.id?'var(--text)':'var(--text2)'}`,
+    }));
+    const planDays = this.planDaysData.map(pd=>({
+      ...pd, icon: pd.type==='strength' ? '💪' : '🏃',
+      iconStyle: `width:36px;height:36px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0`,
+      statusStyle: `font:700 11px var(--fb);color:${pd.statusColor}`,
+      onClick: ()=>this.openPlanDay(pd),
+    }));
+    const exerciseItems = this.exercisesData.map(ex=>({ name:ex.name, category:ex.category, level:ex.level, onClick:()=>this.openExercise(ex.id),
+      thumbStyle: ex.gifUrl ? `width:52px;height:52px;border-radius:12px;flex-shrink:0;background:var(--surface2) center/cover no-repeat url('${ex.gifUrl}')` : `width:52px;height:52px;border-radius:12px;background:repeating-linear-gradient(45deg,var(--surface2),var(--surface2) 6px,var(--border) 6px,var(--border) 12px);flex-shrink:0` }));
+    const filterItems = this.filterLabels.map(f=>({ label:f, onClick:()=>this.selectFilter(f),
+      style: `cursor:pointer;padding:8px 12px;border-radius:10px;font:600 12px var(--fb);background:${activeFilter===f?'var(--orange)':'var(--surface)'};color:${activeFilter===f?'#000':'var(--text2)'};border:1px solid ${activeFilter===f?'var(--orange)':'var(--border)'}` }));
+    const paceHeights = [38,46,52,48,60,66,72,80];
+    const paceBars = paceHeights.map((h,i)=>({ week:i+1, style:`width:100%;height:${h}%;background:${i===paceHeights.length-1?'var(--orange)':'var(--surface2)'};border-radius:4px` }));
+    const profileRowActions = { 'Dados pessoais':this.openDadosPessoais, 'Objetivo':this.openObjetivo, 'Capacidade':this.openCapacidade, 'Disponibilidade':this.openDisponibilidade, 'Equipamentos':this.openEquipamentos, 'Integrações':this.toggleIntegracoes, 'Sobre':this.openSobre, 'Configurações':this.openConfig };
+    const showDadosPessoais = this.state.detail==='dadosPessoais';
+    const showObjetivo = this.state.detail==='objetivo';
+    const showCapacidade = this.state.detail==='capacidade';
+    const showDisponibilidade = this.state.detail==='disponibilidade';
+    const showEquipamentos = this.state.detail==='equipamentos';
+    const profileRows = this.profileRowLabels.map(label=>({ label, onClick: profileRowActions[label] }));
+    const showSobre = this.state.detail==='sobre';
+    const showConfig = this.state.detail==='config';
+    const settings = this.state.settings;
+    const resolvedTheme = settings.theme === 'Claro' ? 'light' : settings.theme === 'Escuro' ? 'dark' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    const themeVarsCss = Object.entries(this.themePalettes[resolvedTheme]).map(([k,v])=>`--${k}:${v}`).join(';');
+    const integrations = this.state.integrations;
+    const anyDeviceConnected = integrations.strava || integrations.garmin;
+    const providerLabel = (connected)=>connected?'Desconectar':'Conectar';
+    const providerStyle = (connected)=>`font:600 13px var(--fb);color:${connected?'var(--text2)':'var(--orange)'};cursor:pointer`;
+    const deviceMetrics = [
+      { label:'Freq. cardíaca média', value:'142 bpm' },
+      { label:'Carga de treino (7d)', value:'312 TSS' },
+      { label:'Sono médio', value:'7h 12min' },
+      { label:'VO2 max estimado', value:'47 ml/kg/min' },
+      { label:'Cadência média', value:'168 spm' },
+    ];
+    const toggleStyle = (on)=>`width:46px;height:28px;border-radius:14px;background:${on?'var(--orange)':'var(--surface2)'};position:relative;cursor:pointer;flex-shrink:0;border:1px solid ${on?'var(--orange)':'var(--border)'}`;
+    const toggleDotStyle = (on)=>`width:22px;height:22px;border-radius:50%;background:#fff;position:absolute;top:2px;left:${on?'21px':'2px'};transition:left .15s`;
+    const segStyle = (active)=>`cursor:pointer;flex:1;text-align:center;padding:10px;border-radius:10px;font:600 13px var(--fb);background:${active?'var(--orange)':'transparent'};color:${active?'#000':'var(--text2)'}`;
+    const themeItems = ['Sistema','Claro','Escuro'].map(t=>({ label:t, style:segStyle(settings.theme===t), onClick:()=>this.setTheme(t) }));
+    const unitItems = ['km','mi'].map(u=>({ label:u, style:segStyle(settings.unit===u), onClick:()=>this.setUnit(u) }));
+    const configToggles = [
+      { key:'notifications', label:'Notificações' },
+      { key:'gps', label:'Autorização de GPS' },
+      { key:'saveData', label:'Salvamento de dados' },
+    ].map(t=>({ label:t.label, trackStyle:toggleStyle(settings[t.key]), dotStyle:toggleDotStyle(settings[t.key]), onClick:()=>this.toggleSetting(t.key) }));
+    const firstName = profile.name ? profile.name.split(' ')[0] : 'Atleta';
+    const initials = profile.name ? profile.name.trim().split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase() : 'VT';
+    const isRestDay = (this.props.todayState ?? 'Treino agendado') === 'Dia de descanso';
+    const isMi = (this.props.unitSystem ?? 'km') === 'mi';
+    const distLabel = (km)=> isMi ? `${(km*0.621).toFixed(1)}mi` : `${km.toFixed(1)}km`.replace('.',',');
+
+    const detail = this.state.detail;
+    const exec = this.state.exec || {};
+    let execBlockLabel='', execRepLabel='', execTimeLabel='0:00', execPaceLabel='', execZone='Z1', execNextLabel='';
+    if(detail==='aerobicExec'){
+      if(exec.phase==='warmup'){ execBlockLabel='AQUECIMENTO'; execRepLabel='10 min planejados'; execZone='Z2'; execNextLabel='Intervalado — 4 × 800 m'; }
+      else if(exec.phase==='main'){
+        execBlockLabel = exec.resting ? 'RECUPERAÇÃO' : `INTERVALADO — REP ${exec.rep}/4`;
+        execRepLabel = exec.resting ? `${exec.rep}/4 concluídas` : '800 m';
+        execZone = exec.resting ? 'Z2' : 'Z4';
+        execNextLabel = exec.resting ? `Repetição ${exec.rep+1}/4` : 'Recuperação — 2:00';
+      } else if(exec.phase==='cooldown'){ execBlockLabel='DESAQUECIMENTO'; execRepLabel='10 min planejados'; execZone='Z2'; execNextLabel='Finalizar treino'; }
+      execTimeLabel = this.fmt(exec.resting ? exec.restRemaining : exec.repElapsed);
+      execPaceLabel = exec.resting ? '' : '5:40/km';
+    }
+    const pauseLabel = exec.running ? 'Pausar' : 'Retomar';
+    const advanceLabel = detail==='aerobicExec' && exec.phase==='cooldown' ? 'Finalizar treino' : (exec.resting ? 'Pular recuperação' : 'Concluir repetição');
+    const resultRows = [
+      { label:'Distância', planned:'5,2 km', actual:'5,1 km' },
+      { label:'Tempo', planned:'48 min', actual:'49 min' },
+      { label:'Repetições', planned:'4 × 800 m', actual:'4 × 800 m' },
+      { label:'Zona', planned:'Z4', actual:'Z4' },
+    ];
+
+    const strExec = this.state.strExec || { exIndex:0, set:1, resting:false, restRemaining:60 };
+    const curStrEx = this.strengthPlanData[strExec.exIndex] || this.strengthPlanData[0];
+    const strExerciseIndexLabel = `EXERCÍCIO ${strExec.exIndex+1} DE ${this.strengthPlanData.length}`;
+    const strSetLabel = `Série ${strExec.set} de ${curStrEx.sets}`;
+    const strRepsLabel = `${curStrEx.reps} reps`;
+    const strRestLabel = this.fmt(strExec.restRemaining);
+    const exerciseDescMap = { 'Agachamento':'Pés na largura dos ombros. Desça flexionando quadril e joelhos mantendo o peito erguido.',
+      'Flexão':'Mantenha o corpo reto da cabeça aos calcanhares. Desça até o peito quase tocar o chão e empurre de volta.',
+      'Remada curvada':'Tronco inclinado à frente, puxe a barra em direção ao abdômen mantendo as costas retas.' };
+
+    const exData = this.exercisesData.find(e=>e.id===selectedExercise) || this.exercisesData[0];
+    const { gifCache, gifStatus } = this.state;
+    const exGifUrl = gifCache[exData.id] || null;
+    const exGifStatus = gifStatus[exData.id] || null;
+    const exGifStatusLabel = exGifStatus==='loading' ? '[ Carregando GIF… ]' : exGifStatus==='error' ? '[ GIF indisponível ]' : '[ GIF de execução em loop ]';
+    const exGifBoxStyle = exGifUrl
+      ? `height:180px;border-radius:16px;overflow:hidden;background:var(--surface) center/cover no-repeat url('${exGifUrl}');border:1px solid var(--border)`
+      : `height:180px;border-radius:16px;background:repeating-linear-gradient(45deg,var(--surface),var(--surface) 8px,var(--surface2) 8px,var(--surface2) 16px);display:flex;align-items:center;justify-content:center;border:1px dashed var(--border)`;
+    const exDetail = { ...exData, gifUrl: exGifUrl, gifStatusLabel: exGifStatusLabel, gifBoxStyle: exGifBoxStyle, showGifLabel: !exGifUrl, progressionItems: exData.progression.map((label,i)=>({
+      label, dotStyle:`width:8px;height:8px;border-radius:50%;background:${i===exData.currentLevel?'var(--orange)':'var(--border)'}`,
+      textStyle:`font:${i===exData.currentLevel?'700':'500'} 14px var(--fb);color:${i===exData.currentLevel?'var(--text)':'var(--text2)'}`,
+    })) };
+    const goalItems = this.goalsList.map(g=>({
+      label:g, selected: profile.goal===g,
+      cardStyle: this.chip(profile.goal===g), textStyle: this.chipText(profile.goal===g),
+      onClick: ()=>this.selectGoal(g),
+    }));
+    const strengthItems = this.strengthLevels.map(l=>({
+      label:l, cardStyle: this.chip(profile.strengthLevel===l), textStyle: this.chipText(profile.strengthLevel===l),
+      onClick: ()=>this.selectStrength(l),
+    }));
+    const dayItems = this.dayLabels.map((d,i)=>({
+      label:d[0], cardStyle: `flex:1;${this.chipSmall(profile.days.includes(i))}`, onClick:()=>this.toggleDay(i),
+    }));
+    const durationItems = this.durationOpts.map(d=>({ label:d, cardStyle:this.chipSmall(profile.duration===d), onClick:()=>this.selectDuration(d) }));
+    const locationItems = this.locationOpts.map(l=>({ label:l, cardStyle:`flex:1;${this.chipSmall(profile.location===l)}`, onClick:()=>this.selectLocation(l) }));
+    const equipItems = this.equipmentOpts.map(e=>({ label:e, cardStyle:this.chipSmall(profile.equipment.includes(e)), onClick:()=>this.toggleEquip(e) }));
+    const inputStyle = `background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);font:500 15px var(--fb)`;
+    const planName = (profile.goal||'').toLowerCase().includes('5 km') ? 'Plano 5K' : (profile.goal||'').toLowerCase().includes('10 km') ? 'Plano 10K' : 'Plano Condicionamento + Força';
+    return {
+      isSplash: obStep==='splash', isWelcome: obStep==='welcome',
+      isBasic: obStep==='basic', isGoal: obStep==='goal',
+      isCapacity: obStep==='capacity', isAvailability: obStep==='availability',
+      isGenerating: obStep==='generating', isCreated: obStep==='created', isApp: obStep==='app',
+      tabHoje: activeTab==='hoje', tabPlano: activeTab==='plano', tabTreinos: activeTab==='treinos',
+      tabEvolucao: activeTab==='evolucao', tabPerfil: activeTab==='perfil',
+      navItems, planDays, exerciseItems, filterItems, paceBars, profileRows, firstName, initials,
+      todayCompleted, integracoesOpen, openWorkoutDetail: this.openWorkoutDetail, recalcPlan: this.recalcPlan,
+      isRestDay, distLabel, distKmToday: distLabel(42.3), distKmMonth: distLabel(38.4),
+      toggleIntegracoes: this.toggleIntegracoes,
+      showWorkoutDetail: detail==='workoutDetail', showAerobicExec: detail==='aerobicExec', showAerobicResult: detail==='aerobicResult',
+      showStrengthDetail: detail==='strengthDetail', showStrengthExec: detail==='strengthExec', showStrengthResult: detail==='strengthResult',
+      showExerciseDetail: detail==='exerciseDetail',
+      aerobicBlocks: this.aerobicBlocksData, closeDetail: this.closeDetail, startAerobic: this.startAerobic,
+      execBlockLabel, execRepLabel, execTimeLabel, execPaceLabel, execZone, execNextLabel, pauseLabel, advanceLabel,
+      togglePause: this.togglePause, advanceExec: this.advanceExec, resultRows,
+      finishAerobic: this.finishAerobic,
+      strengthPlan: this.strengthPlanData, startStrength: this.startStrength,
+      strExerciseIndexLabel, strExerciseName: curStrEx.name, strExerciseDesc: exerciseDescMap[curStrEx.name],
+      strResting: strExec.resting, strSetLabel, strRepsLabel, strRestLabel,
+      finishSet: this.finishSet, skipRest: this.skipRest, finishStrength: this.finishStrength,
+      themeVarsCss, exDetail, openExercise: this.openExercise, showSobre, closeSobre: this.closeSobre,
+      stravaConnected: integrations.strava, garminConnected: integrations.garmin,
+      stravaLabel: providerLabel(integrations.strava), garminLabel: providerLabel(integrations.garmin),
+      stravaStyle: providerStyle(integrations.strava), garminStyle: providerStyle(integrations.garmin),
+      toggleStrava: ()=>this.toggleProvider('strava'), toggleGarmin: ()=>this.toggleProvider('garmin'),
+      anyDeviceConnected, deviceMetrics, goToIntegracoes: ()=>this.setState({ activeTab:'perfil', integracoesOpen:true }),
+      showConfig, closeConfig: this.closeConfig, themeItems, unitItems, configToggles, clearLocalData: this.clearLocalData,
+      showDadosPessoais, closeDadosPessoais: this.closeDadosPessoais,
+      showObjetivo, closeObjetivo: this.closeObjetivo, showCapacidade, closeCapacidade: this.closeCapacidade,
+      showDisponibilidade, closeDisponibilidade: this.closeDisponibilidade, showEquipamentos, closeEquipamentos: this.closeEquipamentos,
+      goWelcome: this.goWelcome, goBasic: this.goBasic, goGoal: this.goGoal, goCapacity: this.goCapacity,
+      goAvailability: this.goAvailability, goGenerating: this.goGenerating, goApp: this.goApp,
+      profile, setName:this.setName, setAge:this.setAge, setWeight:this.setWeight, setHeight:this.setHeight,
+      goalItems, strengthItems, dayItems, durationItems, locationItems, equipItems, inputStyle, planName,
+      setRunsYes:this.setRunsYes, setRunsNo:this.setRunsNo, setFreq:this.setFreq, setAvgDist:this.setAvgDist, setAvgPace:this.setAvgPace, setMaxDist:this.setMaxDist,
+      runsYesStyle: `flex:1;${this.chipSmall(profile.runsNow===true)}`, runsNoStyle: `flex:1;${this.chipSmall(profile.runsNow===false)}`,
+      goalBtnStyle: `border:none;background:${profile.goal?'var(--orange)':'var(--surface2)'};color:${profile.goal?'#000':'var(--text2)'};font:700 17px var(--fb);padding:18px;border-radius:16px;cursor:${profile.goal?'pointer':'default'}`,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+node_modules/
+dist/
+functions/lib/
+functions/node_modules/
+.env
+.env.local
+functions/.secret.local
+functions/.env.local
+*.log
+.DS_Store
+.firebase/
+# Android build outputs (the android/ project itself is committed)
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/app/google-services.json
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+android/capacitor-cordova-android-plugins/
+*.keystore
+*.jks
+*.tsbuildinfo
